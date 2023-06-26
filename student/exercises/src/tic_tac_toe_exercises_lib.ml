@@ -87,12 +87,52 @@ let available_moves
 
    After you are done with this implementation, you can uncomment out
    "evaluate" test cases found below in this file. *)
+
+(* directions: 0 - up, 1 - up right, 2 - right, 3 - right down, 4 - down, 5 -
+   down left, 6 - left, 7 - left up*)
+(* let check_neighbor_exists ~(direction : int) ~(pos : Position.t)
+   ~(positions : Piece.t Position.Map.t) : bool = let rec helper (i : int)
+   offsets : bool = match i, offsets with | 0, hd :: _ -> Map.exists
+   positions ~f:(hd po) | _, _ :: tl -> helper (i - 1) tl | _, _ -> false in
+   helper direction (Position.all_offsets pos) ;; *)
+
+   (* returns ( (position, direction) *)
+   let rec add_neighbors ~(pos_list:(Position.t * int) list) ~(p : Piece.t) ~(pieces: Piece.t Position.Map.t)
+    : (Position.t * int) list
+    =
+    match pos_list with
+    | [] -> []
+    | (fst, snd)::tl -> 
+      let next_piece = (List.nth_exn (Position.all_offsets) snd) fst in
+      match (Map.find pieces next_piece) with
+      | None -> []
+      | Some s -> 
+        let rest = add_neighbors ~pos_list:tl ~p ~pieces in
+        if Piece.equal s p then (fst, snd) :: rest else rest
+  in
+
+  let reduce_list ~(pos_list:(Position.t * int) list) ~(p: Piece.t) ~(pieces: Piece.t Position.Map.t) ~(times : int)
+    : (Position.t * int) list =
+    let rec helper (index : int) (l : (Position.t * int) list) :  (Position.t * int) list =
+      match index with
+      | 0 -> l
+      | _ -> helper (index - 1) (add_neighbors ~pos_list ~p ~pieces)
+    in
+    helper times pos_list in
+
+
 let evaluate ~(game_kind : Game_kind.t) ~(pieces : Piece.t Position.Map.t)
   : Evaluation.t
   =
-  ignore pieces;
-  ignore game_kind;
-  failwith "Implement me!"
+(* TODO: 1. populate initial position list for x and o
+         2. pass it through reduce list
+         3. check if returned list length > 0 
+          
+    options: 1. one of the returned list has length > 0 --> that player wins
+             2. no one wins but no more available moves --> tie 
+             3. game in progress *)
+  failwith "unimplemented"
+
 ;;
 
 (* Exercise 3. *)
