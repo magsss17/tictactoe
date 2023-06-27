@@ -14,7 +14,7 @@ end
 
 (* Here are some functions which know how to create a couple different kinds
    of games *)
-let empty_game =
+let empty_game_ttt =
   let game_id = Game_id.of_int 0 in
   let game_kind = Game_kind.Tic_tac_toe in
   let player_x = Player.Player (Username.of_string "Player_X") in
@@ -49,8 +49,8 @@ let place_piece (game : Game_state.t) ~piece ~position : Game_state.t =
   { game with pieces }
 ;;
 
-let win_for_x =
-  empty_game
+let win_for_x_ttt =
+  empty_game_ttt
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 0; column = 0 }
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 0 }
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 2 }
@@ -62,16 +62,16 @@ let win_for_x =
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 1; column = 2 }
 ;;
 
-let non_win =
-  empty_game
+let non_win_ttt =
+  empty_game_ttt
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 0; column = 0 }
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 0 }
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 2 }
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 0 }
 ;;
 
-let win_for_o =
-  empty_game
+let win_for_o_ttt =
+  empty_game_ttt
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 0; column = 0 }
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 0 }
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 2 }
@@ -82,8 +82,34 @@ let win_for_o =
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 0; column = 1 }
 ;;
 
-let tie =
-  empty_game
+let diag_win_for_o_ttt =
+  empty_game_ttt
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 0; column = 0 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 0 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 2 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 0 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 1 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 1 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 0; column = 1 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 0; column = 2 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 1; column = 2 }
+;;
+
+let invalid_state_ttt =
+  empty_game_ttt
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 0; column = 0 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 1 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 2 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 0 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 1; column = 0 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 1 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 0; column = 2 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 0; column = 1 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 1; column = 2 }
+;;
+
+let tie_ttt =
+  empty_game_ttt
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 0; column = 0 }
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 0 }
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 2 }
@@ -109,6 +135,34 @@ let win_for_x_omok =
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 3; column = 7 }
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 3; column = 2 }
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 3; column = 4 }
+;;
+
+let non_win_omok =
+  empty_game_omok
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 0; column = 0 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 3; column = 8 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 4; column = 2 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 13; column = 9 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 13; column = 8 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 13; column = 5 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 3; column = 5 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 5; column = 4 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 4; column = 12 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 10; column = 8 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 3; column = 3 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 9; column = 9 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 5; column = 8 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 3; column = 5 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 6; column = 7 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 4; column = 4 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 8; column = 12 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 18; column = 13 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 13; column = 14 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 15; column = 4 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 7; column = 1 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 11; column = 7 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 12; column = 3 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 8; column = 14 }
 ;;
 
 (* Exercise 1.
@@ -261,12 +315,14 @@ let exercise_one =
      fun () ->
        let moves =
          available_moves
-           ~game_kind:win_for_x.game_kind
-           ~pieces:win_for_x.pieces
+           ~game_kind:win_for_x_ttt.game_kind
+           ~pieces:win_for_x_ttt.pieces
        in
        print_s [%sexp (moves : Position.t list)];
        let moves =
-         available_moves ~game_kind:non_win.game_kind ~pieces:non_win.pieces
+         available_moves
+           ~game_kind:non_win_ttt.game_kind
+           ~pieces:non_win_ttt.pieces
        in
        print_s [%sexp (moves : Position.t list)])
 ;;
@@ -277,7 +333,9 @@ let exercise_two =
     (let%map_open.Command () = return () in
      fun () ->
        let evaluation =
-         evaluate ~game_kind:win_for_x.game_kind ~pieces:win_for_x.pieces
+         evaluate
+           ~game_kind:win_for_x_ttt.game_kind
+           ~pieces:win_for_x_ttt.pieces
        in
        print_s [%sexp (evaluation : Evaluation.t)])
 ;;
@@ -299,8 +357,8 @@ let exercise_three =
        let winning_moves =
          winning_moves
            ~me:piece
-           ~game_kind:non_win.game_kind
-           ~pieces:non_win.pieces
+           ~game_kind:non_win_ttt.game_kind
+           ~pieces:non_win_ttt.pieces
        in
        print_s [%sexp (winning_moves : Position.t list)];
        ())
@@ -323,15 +381,15 @@ let exercise_four =
        let losing_moves =
          losing_moves
            ~me:piece
-           ~game_kind:non_win.game_kind
-           ~pieces:non_win.pieces
+           ~game_kind:non_win_ttt.game_kind
+           ~pieces:non_win_ttt.pieces
        in
        print_s [%sexp (losing_moves : Position.t list)];
        ())
 ;;
 
 let%expect_test "print_win_for_x" =
-  print_endline (Game_state.to_string_hum win_for_x);
+  print_endline (Game_state.to_string_hum win_for_x_ttt);
   [%expect
     {|
     ((game_id 0)(game_kind Tic_tac_toe)(player_x(Player Player_X))(player_o(Player Player_O))(game_status(Turn_of X)))
@@ -341,7 +399,7 @@ let%expect_test "print_win_for_x" =
 ;;
 
 let%expect_test "print_non_win" =
-  print_endline (Game_state.to_string_hum non_win);
+  print_endline (Game_state.to_string_hum non_win_ttt);
   [%expect
     {|
     ((game_id 0)(game_kind Tic_tac_toe)(player_x(Player Player_X))(player_o(Player Player_O))(game_status(Turn_of X)))
@@ -353,7 +411,9 @@ let%expect_test "print_non_win" =
 (* After you've implemented [available_moves], uncomment these tests! *)
 let%expect_test "yes available_moves" =
   let (moves : Position.t list) =
-    available_moves ~game_kind:non_win.game_kind ~pieces:non_win.pieces
+    available_moves
+      ~game_kind:non_win_ttt.game_kind
+      ~pieces:non_win_ttt.pieces
     |> List.sort ~compare:Position.compare
   in
   print_s [%sexp (moves : Position.t list)];
@@ -365,7 +425,9 @@ let%expect_test "yes available_moves" =
 
 let%expect_test "no available_moves" =
   let (moves : Position.t list) =
-    available_moves ~game_kind:win_for_x.game_kind ~pieces:win_for_x.pieces
+    available_moves
+      ~game_kind:win_for_x_ttt.game_kind
+      ~pieces:win_for_x_ttt.pieces
     |> List.sort ~compare:Position.compare
   in
   print_s [%sexp (moves : Position.t list)];
@@ -374,30 +436,48 @@ let%expect_test "no available_moves" =
 
 (* When you've implemented the [evaluate] function, uncomment the next two
    tests! *)
-let%expect_test "evaluate_win_for_x" =
+let%expect_test "evaluate_win_for_x_ttt" =
   print_endline
-    (evaluate ~game_kind:win_for_x.game_kind ~pieces:win_for_x.pieces
+    (evaluate ~game_kind:win_for_x_ttt.game_kind ~pieces:win_for_x_ttt.pieces
      |> Evaluation.to_string);
   [%expect {| (Game_over(winner(X))) |}]
 ;;
 
-let%expect_test "evaluate_non_win" =
+let%expect_test "evaluate_non_win_ttt" =
   print_endline
-    (evaluate ~game_kind:non_win.game_kind ~pieces:non_win.pieces
+    (evaluate ~game_kind:non_win_ttt.game_kind ~pieces:non_win_ttt.pieces
      |> Evaluation.to_string);
   [%expect {| Game_continues |}]
 ;;
 
-let%expect_test "evaluate_win_for_o" =
+let%expect_test "evaluate_win_for_o_ttt" =
   print_endline
-    (evaluate ~game_kind:win_for_o.game_kind ~pieces:win_for_o.pieces
+    (evaluate ~game_kind:win_for_o_ttt.game_kind ~pieces:win_for_o_ttt.pieces
      |> Evaluation.to_string);
   [%expect {| (Game_over(winner(O))) |}]
 ;;
 
-let%expect_test "evaluate_tie" =
+let%expect_test "evaluate_tie_ttt" =
   print_endline
-    (evaluate ~game_kind:tie.game_kind ~pieces:tie.pieces
+    (evaluate ~game_kind:tie_ttt.game_kind ~pieces:tie_ttt.pieces
+     |> Evaluation.to_string);
+  [%expect {| (Game_over(winner())) |}]
+;;
+
+let%expect_test "evaluate_diag_win_o_ttt" =
+  print_endline
+    (evaluate
+       ~game_kind:diag_win_for_o_ttt.game_kind
+       ~pieces:diag_win_for_o_ttt.pieces
+     |> Evaluation.to_string);
+  [%expect {| (Game_over(winner(O))) |}]
+;;
+
+let%expect_test "evaluate_invalid_game_ttt" =
+  print_endline
+    (evaluate
+       ~game_kind:invalid_state_ttt.game_kind
+       ~pieces:invalid_state_ttt.pieces
      |> Evaluation.to_string);
   [%expect {| (Game_over(winner())) |}]
 ;;
@@ -409,6 +489,13 @@ let%expect_test "evaluate_win_for_x_omok" =
        ~pieces:win_for_x_omok.pieces
      |> Evaluation.to_string);
   [%expect {| (Game_over(winner(X))) |}]
+;;
+
+let%expect_test "evaluate_non_win_omok" =
+  print_endline
+    (evaluate ~game_kind:non_win_omok.game_kind ~pieces:non_win_omok.pieces
+     |> Evaluation.to_string);
+  [%expect {| Game_continues |}]
 ;;
 
 (* When you've implemented the [winning_moves] function, uncomment this
