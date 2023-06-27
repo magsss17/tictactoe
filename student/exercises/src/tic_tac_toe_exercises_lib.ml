@@ -165,6 +165,54 @@ let non_win_omok =
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 8; column = 14 }
 ;;
 
+let minor_diag_win_for_x_omok =
+  empty_game_omok
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 1; column = 0 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 5; column = 4 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 14; column = 0 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 8 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 13; column = 1 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 12; column = 5 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 12; column = 2 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 5; column = 6 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 11; column = 3 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 5; column = 8 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 10; column = 4 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 4; column = 8 }
+;;
+
+let win_for_o_omok =
+  empty_game_omok
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 1 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 0; column = 4 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 2 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 4 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 3 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 5 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 4 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 6 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 4; column = 5 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 3; column = 7 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 3; column = 2 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 4; column = 8 }
+;;
+
+let invalid_omok =
+  empty_game_omok
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 1 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 0; column = 4 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 2 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 4 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 3 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 1; column = 5 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 4 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 6 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 4; column = 5 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 3; column = 7 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 3; column = 2 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 8 }
+;;
+
 (* Exercise 1.
 
    For instructions on implemeting this refer to the README.
@@ -233,6 +281,8 @@ let reduce_list
   let rec helper (index : int) (l : (Position.t * int) list)
     : (Position.t * int) list
     =
+    (* print_s [%message "index: %d" (index : int)]; print_s [%message (l :
+       (Position.t * int) list)];*)
     match index with
     | 1 -> l
     | _ -> helper (index - 1) (add_neighbors ~pos_list:l ~p ~pieces)
@@ -289,10 +339,13 @@ let winning_moves
   ~(pieces : Piece.t Position.Map.t)
   : Position.t list
   =
-  ignore me;
-  ignore game_kind;
-  ignore pieces;
-  failwith "Implement me!"
+  let my_pieces = Map.filter pieces ~f:(fun p -> Piece.equal p me) in
+  let available = available_moves ~game_kind ~pieces in
+  List.filter available ~f:(fun x ->
+    let temp = Map.set my_pieces ~key:x ~data:me in
+    match evaluate ~game_kind ~pieces:temp with
+    | Game_over _ -> true
+    | _ -> false)
 ;;
 
 (* Exercise 4. *)
@@ -498,14 +551,52 @@ let%expect_test "evaluate_non_win_omok" =
   [%expect {| Game_continues |}]
 ;;
 
+let%expect_test "evaluate_minor_diag_win_for_x_omok" =
+  print_endline
+    (evaluate
+       ~game_kind:minor_diag_win_for_x_omok.game_kind
+       ~pieces:minor_diag_win_for_x_omok.pieces
+     |> Evaluation.to_string);
+  [%expect {| (Game_over(winner(X))) |}]
+;;
+
+let%expect_test "evaluate_win_for_o_omok" =
+  print_endline
+    (evaluate
+       ~game_kind:win_for_o_omok.game_kind
+       ~pieces:win_for_o_omok.pieces
+     |> Evaluation.to_string);
+  [%expect {| (Game_over(winner(O))) |}]
+;;
+
+let%expect_test "evaluate_invalid_omok" =
+  print_endline
+    (evaluate ~game_kind:invalid_omok.game_kind ~pieces:invalid_omok.pieces
+     |> Evaluation.to_string);
+  [%expect {| Game_continues |}]
+;;
+
 (* When you've implemented the [winning_moves] function, uncomment this
-   test! *)
-(*let%expect_test "winning_move" = let positions = winning_moves
-  ~game_kind:non_win.game_kind ~pieces:non_win.pieces ~me:Piece.X in print_s
-  [%sexp (positions : Position.t list)]; [%expect {| ((((row 1) (column 1))))
-  |}]; let positions = winning_moves ~game_kind:non_win.game_kind
-  ~pieces:non_win.pieces ~me:Piece.O in print_s [%sexp (positions :
-  Position.t list)]; [%expect {| () |}] ;;*)
+   test!*)
+let%expect_test "winning_move" =
+  let positions =
+    winning_moves
+      ~game_kind:non_win_ttt.game_kind
+      ~pieces:non_win_ttt.pieces
+      ~me:Piece.X
+  in
+  print_s [%sexp (positions : Position.t list)];
+  [%expect {| (((row 1) (column 1)))
+  |}];
+  let positions =
+    winning_moves
+      ~game_kind:non_win_ttt.game_kind
+      ~pieces:non_win_ttt.pieces
+      ~me:Piece.O
+  in
+  print_s [%sexp (positions : Position.t list)];
+  [%expect {| () |}]
+;;
 
 (* When you've implemented the [losing_moves] function, uncomment this
    test! *)
