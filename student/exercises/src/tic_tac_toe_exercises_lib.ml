@@ -209,8 +209,8 @@ let invalid_omok =
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 6 }
   |> place_piece ~piece:Piece.X ~position:{ Position.row = 4; column = 5 }
   |> place_piece ~piece:Piece.O ~position:{ Position.row = 3; column = 7 }
-  |> place_piece ~piece:Piece.X ~position:{ Position.row = 3; column = 2 }
-  |> place_piece ~piece:Piece.O ~position:{ Position.row = 2; column = 8 }
+  |> place_piece ~piece:Piece.X ~position:{ Position.row = 2; column = 5 }
+  |> place_piece ~piece:Piece.O ~position:{ Position.row = 4; column = 8 }
 ;;
 
 (* Exercise 1.
@@ -300,7 +300,7 @@ let evaluate ~(game_kind : Game_kind.t) ~(pieces : Piece.t Position.Map.t)
      2. no one wins but no more available moves --> tie 3. game in
      progress *)
   let times = match game_kind with Tic_tac_toe -> 3 | Omok -> 5 in
-  let l = List.init 8 ~f:(fun i -> i) in
+  let l = List.init 4 ~f:(fun i -> i) in
   let x_pieces = Map.filter pieces ~f:(fun p -> Piece.equal p Piece.X) in
   let o_pieces = Map.filter pieces ~f:(fun p -> Piece.equal p Piece.O) in
   let init_x =
@@ -573,7 +573,7 @@ let%expect_test "evaluate_invalid_omok" =
   print_endline
     (evaluate ~game_kind:invalid_omok.game_kind ~pieces:invalid_omok.pieces
      |> Evaluation.to_string);
-  [%expect {| Game_continues |}]
+  [%expect {| Illegal_state |}]
 ;;
 
 (* When you've implemented the [winning_moves] function, uncomment this
