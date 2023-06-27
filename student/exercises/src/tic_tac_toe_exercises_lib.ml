@@ -578,7 +578,7 @@ let%expect_test "evaluate_invalid_omok" =
 
 (* When you've implemented the [winning_moves] function, uncomment this
    test!*)
-let%expect_test "winning_move" =
+let%expect_test "winning_move_ttt" =
   let positions =
     winning_moves
       ~game_kind:non_win_ttt.game_kind
@@ -596,6 +596,26 @@ let%expect_test "winning_move" =
   in
   print_s [%sexp (positions : Position.t list)];
   [%expect {| () |}]
+;;
+
+let%expect_test "winning_move_omok" =
+  let positions =
+    winning_moves
+      ~game_kind:non_win_omok.game_kind
+      ~pieces:non_win_omok.pieces
+      ~me:Piece.X
+  in
+  print_s [%sexp (positions : Position.t list)];
+  [%expect {| ()
+  |}];
+  let positions =
+    winning_moves
+      ~game_kind:non_win_omok.game_kind
+      ~pieces:non_win_omok.pieces
+      ~me:Piece.O
+  in
+  print_s [%sexp (positions : Position.t list)];
+  [%expect {| (((row 12) (column 6))) |}]
 ;;
 
 (* When you've implemented the [losing_moves] function, uncomment this

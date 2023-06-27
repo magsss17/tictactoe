@@ -1,0 +1,167 @@
+Game server running on port 8181
+("user joined" (user 64.215.233.97))
+2023-06-27 20:45:43.346676Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:45:43.379898Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:43.409653Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:43.634006Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:43.846280Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:44.069161Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:44.283411Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:44.503370Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:44.731876Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:44.951112Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:45.169084Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:45.386347Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:45.616142Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:45.836072Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:46.050224Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:46.286454Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:46.501379Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:46.720211Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:46.949017Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:47.167528Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:47.384426Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:47.596864Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:47.818840Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:48.052669Z Info 64.215.233.97 wants to view 1
+("user joined" (user 64.215.233.97))
+2023-06-27 20:45:50.549987Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:45:50.550015Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:45:51.535786Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:45:51.535817Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:45:52.556453Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:45:52.556481Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:45:53.572364Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:45:53.572392Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:45:54.555056Z Info 64.215.233.97 as (64.215.233.97) proposed 'Tic_tac_toe against server bot on Easy difficulty'
+2023-06-27 20:45:54.599887Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:54.632546Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:45:54.805100Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:55.018312Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:55.233416Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:55.452175Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:55.635391Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:45:55.686404Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:55.852887Z Info 64.215.233.97 as (64.215.233.97) wants to play '((row 0) (column 2))' in game 1
+2023-06-27 20:45:55.902896Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:56.136897Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:56.367143Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:56.585424Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:56.654516Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:45:56.817075Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:57.050522Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:57.271141Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:57.487841Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:57.668440Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:45:57.702258Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:57.918592Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:58.102651Z Info 64.215.233.97 as (64.215.233.97) wants to play '((row 0) (column 0))' in game 1
+2023-06-27 20:45:58.137525Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:58.351671Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:58.587938Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:58.685742Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:45:58.820658Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:59.052497Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:59.069448Z Info 64.215.233.97 as (64.215.233.97) wants to play '((row 1) (column 0))' in game 1
+2023-06-27 20:45:59.265397Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:59.485304Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:59.701222Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:45:59.701259Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:45:59.919090Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:00.153552Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:00.368990Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:00.587312Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:00.734831Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:46:00.800916Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:01.017424Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:01.236257Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:01.469907Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:01.701090Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:01.766902Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:46:01.919535Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:02.154984Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:02.386200Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:02.602772Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:02.785399Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:46:02.819117Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:03.050295Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:03.266569Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:03.481668Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:03.702620Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:03.801228Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:46:03.917780Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:04.156580Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:04.368069Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:04.586469Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:04.804000Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:04.900927Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:46:05.015602Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:05.250371Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:05.472053Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:05.700480Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:05.852989Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:46:05.917495Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:06.137307Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:06.369073Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:06.585672Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:06.800917Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:06.867721Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:46:07.015634Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:07.250660Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:07.470200Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:07.704014Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:07.903143Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:46:07.937326Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:08.153916Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:08.386440Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:08.605618Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:08.826938Z Info 64.215.233.97 wants to view 1
+2023-06-27 20:46:08.922302Z Info 64.215.233.97  wants to know if game id '1' is thinking.
+2023-06-27 20:46:09.093544Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:09.093571Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:10.125448Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:10.125494Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:11.153861Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:11.153891Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:12.171533Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:12.171575Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:13.204517Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:13.204561Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:14.222856Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:14.222893Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:15.261659Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:15.261691Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:16.288450Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:16.288493Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:17.304463Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:17.304507Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:18.323509Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:18.323541Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:19.341739Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:19.341772Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:20.355782Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:20.355828Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:21.382730Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:21.382771Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:22.387253Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:22.388239Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:23.405989Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:23.406031Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:24.437315Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:24.437359Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:25.457607Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:25.457639Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:26.474570Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:26.474603Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:30.688452Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:30.688491Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:35.686325Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:35.686356Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:39.690002Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:39.690034Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:43.683597Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:43.683637Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:47.687603Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:47.687649Z Info 64.215.233.97 wants to view all games with two players
+2023-06-27 20:46:50.688076Z Info 64.215.233.97 wants to view all joinable games
+2023-06-27 20:46:50.688107Z Info 64.215.233.97 wants to view all games with two players
