@@ -90,49 +90,86 @@ let available_moves
 
 (* directions: 0 - up, 1 - up right, 2 - right, 3 - right down, 4 - down, 5 -
    down left, 6 - left, 7 - left up*)
-(* let check_neighbor_exists ~(direction : int) ~(pos : Position.t)
-   ~(positions : Piece.t Position.Map.t) : bool = let rec helper (i : int)
-   offsets : bool = match i, offsets with | 0, hd :: _ -> Map.exists
-   positions ~f:(hd po) | _, _ :: tl -> helper (i - 1) tl | _, _ -> false in
-   helper direction (Position.all_offsets pos) ;; *)
+(*let check_neighbor_exists ~(direction : int) ~(pos : Position.t)
+  ~(positions : Piece.t Position.Map.t) : bool = let rec helper (i : int)
+  offsets : bool = match i, offsets with | 0, hd :: _ -> Map.exists positions
+  ~f:(hd po) | _, _ :: tl -> helper (i - 1) tl | _, _ -> false in helper
+  direction (Position.all_offsets pos) ;;*)
 
-   (* returns ( (position, direction) *)
-   let rec add_neighbors ~(pos_list:(Position.t * int) list) ~(p : Piece.t) ~(pieces: Piece.t Position.Map.t)
+let rec add_neighbors
+  ~(pos_list : (Position.t * int) list)
+  ~(p : Piece.t)
+  ~(pieces : Piece.t Position.Map.t)
+  : (Position.t * int) list
+  =
+  match pos_list with
+  | [] -> []
+  | (fst, snd) :: tl ->
+    let next_piece = (List.nth_exn Position.all_offsets snd) fst in
+    (match Map.find pieces next_piece with
+     | None -> add_neighbors ~pos_list:tl ~p ~pieces
+     | Some s ->
+       let rest = add_neighbors ~pos_list:tl ~p ~pieces in
+       if Piece.equal s p then (next_piece, snd) :: rest else rest)
+;;
+
+let reduce_list
+  ~(pos_list : (Position.t * int) list)
+  ~(p : Piece.t)
+  ~(pieces : Piece.t Position.Map.t)
+  ~(times : int)
+  : (Position.t * int) list
+  =
+  let rec helper (index : int) (l : (Position.t * int) list)
     : (Position.t * int) list
     =
-    match pos_list with
-    | [] -> []
-    | (fst, snd)::tl -> 
-      let next_piece = (List.nth_exn (Position.all_offsets) snd) fst in
-      match (Map.find pieces next_piece) with
-      | None -> []
-      | Some s -> 
-        let rest = add_neighbors ~pos_list:tl ~p ~pieces in
-        if Piece.equal s p then (fst, snd) :: rest else rest
+    match index with
+    | 1 -> l
+    | _ -> helper (index - 1) (add_neighbors ~pos_list:l ~p ~pieces)
   in
-
-  let reduce_list ~(pos_list:(Position.t * int) list) ~(p: Piece.t) ~(pieces: Piece.t Position.Map.t) ~(times : int)
-    : (Position.t * int) list =
-    let rec helper (index : int) (l : (Position.t * int) list) :  (Position.t * int) list =
-      match index with
-      | 0 -> l
-      | _ -> helper (index - 1) (add_neighbors ~pos_list ~p ~pieces)
-    in
-    helper times pos_list in
-
+  helper times pos_list
+;;
 
 let evaluate ~(game_kind : Game_kind.t) ~(pieces : Piece.t Position.Map.t)
   : Evaluation.t
   =
-(* TODO: 1. populate initial position list for x and o
-         2. pass it through reduce list
-         3. check if returned list length > 0 
-          
-    options: 1. one of the returned list has length > 0 --> that player wins
-             2. no one wins but no more available moves --> tie 
-             3. game in progress *)
-  failwith "unimplemented"
+  (* TODO: 1. populate initial position list for x and o 2. pass it through
+     reduce list 3. check if returned list length > 0
 
+     options: 1. one of the returned list has length > 0 --> that player wins
+     2. no one wins but no more available moves --> tie 3. game in
+     progress *)
+  let times = match game_kind with Tic_tac_toe -> 3 | Omok -> 5 in
+  let l = List.init 8 ~f:(fun i -> i) in
+  let x_pieces = Map.filter pieces ~f:(fun p -> Piece.equal p Piece.X) in
+  let o_pieces = Map.filter pieces ~f:(fun p -> Piece.equal p Piece.O) in
+  let init_x =
+    List.concat
+      (List.map l ~f:(fun x ->
+         List.map (Map.keys x_pieces) ~f:(fun y -> y, x)))
+  in
+  let init_o =
+    List.concat
+      (List.map l ~f:(fun x ->
+         List.map (Map.keys o_pieces) ~f:(fun y -> y, x)))
+  in
+  let num_x =
+    List.length (reduce_list ~pos_list:init_x ~p:Piece.X ~pieces ~times)
+  in
+  let num_o =
+    List.length (reduce_list ~pos_list:init_o ~p:Piece.O ~pieces ~times)
+  in
+  match num_x, num_o with
+  | 0, 0 ->
+    if List.is_empty (available_moves ~game_kind ~pieces)
+    then Game_over { winner = None }
+    else Game_continues
+  | _, 0 -> Game_over { winner = Some Piece.X }
+  | 0, _ -> Game_over { winner = Some Piece.O }
+  | _, _ ->
+    if List.is_empty (available_moves ~game_kind ~pieces)
+    then Game_over { winner = None }
+    else Illegal_state
 ;;
 
 (* Exercise 3. *)
@@ -281,13 +318,19 @@ let%expect_test "no available_moves" =
 
 (* When you've implemented the [evaluate] function, uncomment the next two
    tests! *)
-(* let%expect_test "evalulate_win_for_x" = print_endline (evaluate
-   ~game_kind:win_for_x.game_kind ~pieces:win_for_x.pieces |>
-   Evaluation.to_string); [%expect {| (Win (X)) |}] ;;
+let%expect_test "evalulate_win_for_x" =
+  print_endline
+    (evaluate ~game_kind:win_for_x.game_kind ~pieces:win_for_x.pieces
+     |> Evaluation.to_string);
+  [%expect {| (Game_over(winner(X))) |}]
+;;
 
-   let%expect_test "evalulate_non_win" = print_endline (evaluate
-   ~game_kind:non_win.game_kind ~pieces:non_win.pieces |>
-   Evaluation.to_string); [%expect {| Game_continues |}] ;; *)
+let%expect_test "evalulate_non_win" =
+  print_endline
+    (evaluate ~game_kind:non_win.game_kind ~pieces:non_win.pieces
+     |> Evaluation.to_string);
+  [%expect {| Game_continues |}]
+;;
 
 (* When you've implemented the [winning_moves] function, uncomment this
    test! *)
