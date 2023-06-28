@@ -56,10 +56,12 @@ let pick_winning_move_or_block_if_possible_strategy
   ~(pieces : Piece.t Position.Map.t)
   : Position.t
   =
-  ignore me;
-  ignore game_kind;
-  ignore pieces;
-  failwith "Implement me!"
+  let blocking_moves =
+    Tic_tac_toe_exercises_lib.blocking_moves ~me ~game_kind ~pieces
+  in
+  if not (List.is_empty blocking_moves)
+  then List.random_element_exn blocking_moves
+  else pick_winning_move_if_possible_strategy ~me ~game_kind ~pieces
 ;;
 
 let _ = pick_winning_move_or_block_if_possible_strategy
@@ -90,7 +92,7 @@ let _ = score
 let compute_next_move ~(me : Piece.t) ~(game_state : Game_state.t)
   : Position.t
   =
-  pick_winning_move_if_possible_strategy
+  pick_winning_move_or_block_if_possible_strategy
     ~me
     ~game_kind:game_state.game_kind
     ~pieces:game_state.pieces
