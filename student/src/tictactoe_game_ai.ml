@@ -56,12 +56,17 @@ let pick_winning_move_or_block_if_possible_strategy
   ~(pieces : Piece.t Position.Map.t)
   : Position.t
   =
+  let winning_moves =
+    Tic_tac_toe_exercises_lib.winning_moves ~me ~game_kind ~pieces
+  in
   let blocking_moves =
     Tic_tac_toe_exercises_lib.blocking_moves ~me ~game_kind ~pieces
   in
-  if not (List.is_empty blocking_moves)
+  if not (List.is_empty winning_moves)
+  then List.random_element_exn winning_moves
+  else if not (List.is_empty blocking_moves)
   then List.random_element_exn blocking_moves
-  else pick_winning_move_if_possible_strategy ~me ~game_kind ~pieces
+  else random_move_strategy ~game_kind ~pieces
 ;;
 
 let _ = pick_winning_move_or_block_if_possible_strategy
