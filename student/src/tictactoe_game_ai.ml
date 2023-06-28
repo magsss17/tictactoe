@@ -43,6 +43,8 @@ let pick_winning_move_if_possible_strategy
   else List.random_element_exn winning_moves
 ;;
 
+let _ = pick_winning_move_if_possible_strategy
+
 (* Exercise 4.2.
 
    Implement a game AI that picks a random position, unless there is an
@@ -62,14 +64,13 @@ let pick_winning_move_or_block_if_possible_strategy
   let blocking_moves =
     Tic_tac_toe_exercises_lib.blocking_moves ~me ~game_kind ~pieces
   in
+  print_s [%message "blocking moves: " (blocking_moves : Position.t list)];
   if not (List.is_empty winning_moves)
   then List.random_element_exn winning_moves
   else if not (List.is_empty blocking_moves)
   then List.random_element_exn blocking_moves
   else random_move_strategy ~game_kind ~pieces
 ;;
-
-let _ = pick_winning_move_or_block_if_possible_strategy
 
 let score
   ~(me : Piece.t)
