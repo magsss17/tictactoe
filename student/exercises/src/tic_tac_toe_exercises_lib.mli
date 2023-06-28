@@ -35,7 +35,7 @@ val winning_moves
   -> Position.t list
 
 (** Finds all of the winning moves for your opponent. *)
-val losing_moves
+val blocking_moves
   :  me:Piece.t
   -> game_kind:Game_kind.t
   -> pieces:Piece.t Position.Map.t
