@@ -634,7 +634,6 @@ let%expect_test "print_losing" =
       ~me:Piece.O
   in
   print_s [%sexp (positions : Position.t list)];
-  [%expect
-    {|
+  [%expect {|
   (((row 1) (column 1))) |}]
 ;;

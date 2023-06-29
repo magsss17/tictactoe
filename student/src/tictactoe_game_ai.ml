@@ -1,7 +1,6 @@
 open! Core
 open Tic_tac_toe_2023_common
 open Protocol
-open Async
 
 (* Exercise 1.2.
 
@@ -37,7 +36,6 @@ let pick_winning_move_if_possible_strategy
   let winning_moves =
     Tic_tac_toe_exercises_lib.winning_moves ~me ~game_kind ~pieces
   in
-  print_s [%message "WINNING MOVES: " (winning_moves : Position.t list)];
   if List.is_empty winning_moves
   then random_move_strategy ~game_kind ~pieces
   else List.random_element_exn winning_moves
@@ -52,6 +50,7 @@ let _ = pick_winning_move_if_possible_strategy
 
    After you are done, update [compute_next_move] to use your
    [pick_winning_move_if_possible_strategy]. *)
+
 let pick_winning_move_or_block_if_possible_strategy
   ~(me : Piece.t)
   ~(game_kind : Game_kind.t)
@@ -64,7 +63,6 @@ let pick_winning_move_or_block_if_possible_strategy
   let blocking_moves =
     Tic_tac_toe_exercises_lib.blocking_moves ~me ~game_kind ~pieces
   in
-  print_s [%message "blocking moves: " (blocking_moves : Position.t list)];
   if not (List.is_empty winning_moves)
   then List.random_element_exn winning_moves
   else if not (List.is_empty blocking_moves)
@@ -72,19 +70,7 @@ let pick_winning_move_or_block_if_possible_strategy
   else random_move_strategy ~game_kind ~pieces
 ;;
 
-let score
-  ~(me : Piece.t)
-  ~(game_kind : Game_kind.t)
-  ~(pieces : Piece.t Position.Map.t)
-  : float
-  =
-  ignore me;
-  ignore game_kind;
-  ignore pieces;
-  0.0
-;;
-
-let _ = score
+let _ = pick_winning_move_or_block_if_possible_strategy
 
 (* [compute_next_move] is your Game AI's function.
 
@@ -95,11 +81,113 @@ let _ = score
    [compute_next_move] is only called whenever it is your turn, the game
    isn't yet over, so feel free to raise in cases where there are no
    available spots to pick. *)
+
+let score
+  ~(me : Piece.t)
+  ~(game_kind : Game_kind.t)
+  ~(pieces : Piece.t Position.Map.t)
+  : float
+  =
+  let result = Tic_tac_toe_exercises_lib.evaluate ~game_kind ~pieces in
+  match result with
+  | Game_over { winner = Some p } ->
+    if Piece.equal me p then Float.infinity else Float.neg_infinity
+  | _ -> 0.0
+;;
+
+let is_terminal_node
+  ~(game_kind : Game_kind.t)
+  ~(pieces : Piece.t Position.Map.t)
+  : bool
+  =
+  match Tic_tac_toe_exercises_lib.evaluate ~game_kind ~pieces with
+  | Game_continues -> false
+  | _ -> true
+;;
+
+let rec minimax
+  ~(node : Position.t)
+  ~(depth : int)
+  ~(maximizing_player : bool)
+  ~(game_kind : Game_kind.t)
+  ~(me : Piece.t)
+  ~(pieces : Piece.t Position.Map.t)
+  ~(player : Piece.t)
+  : float
+  =
+  let temp = Map.set pieces ~key:node ~data:me in
+  if depth = 0 || is_terminal_node ~game_kind ~pieces:temp
+  then score ~game_kind ~me:player ~pieces
+  else if maximizing_player
+  then (
+    let value = ref Float.neg_infinity in
+    let children =
+      Tic_tac_toe_exercises_lib.available_moves ~game_kind ~pieces:temp
+    in
+    List.iter children ~f:(fun x ->
+      value
+        := Core.Float.max
+             !value
+             (minimax
+                ~node:x
+                ~depth:(depth - 1)
+                ~maximizing_player:false
+                ~game_kind
+                ~me:(Piece.flip me)
+                ~pieces:temp
+                ~player));
+    !value)
+  else (
+    let value = ref Float.infinity in
+    let children =
+      Tic_tac_toe_exercises_lib.available_moves ~game_kind ~pieces:temp
+    in
+    List.iter children ~f:(fun x ->
+      value
+        := Core.Float.min
+             !value
+             (minimax
+                ~node:x
+                ~depth:(depth - 1)
+                ~maximizing_player:true
+                ~game_kind
+                ~me
+                ~pieces:temp
+                ~player));
+    !value)
+;;
+
 let compute_next_move ~(me : Piece.t) ~(game_state : Game_state.t)
   : Position.t
   =
-  pick_winning_move_or_block_if_possible_strategy
-    ~me
-    ~game_kind:game_state.game_kind
-    ~pieces:game_state.pieces
+  let game_kind = game_state.game_kind in
+  let pieces = game_state.pieces in
+  let available =
+    Tic_tac_toe_exercises_lib.available_moves
+      ~game_kind:game_state.game_kind
+      ~pieces:game_state.pieces
+  in
+  match
+    available
+    |> List.map ~f:(fun pos ->
+         ( minimax
+             ~node:pos
+             ~depth:11
+             ~maximizing_player:true
+             ~me
+             ~pieces
+             ~game_kind
+             ~player:me
+         , pos ))
+    |> List.max_elt ~compare:(fun (v1, _pos1) (v2, _pos2) ->
+         print_s [%message "" (v1 : Float.t)];
+         print_s [%message "" (_pos1 : Position.t)];
+         print_s [%message "" (v2 : Float.t)];
+         print_s [%message "" (_pos2 : Position.t)];
+         Float.compare v1 v2)
+  with
+  | Some (_v1, pos) ->
+    print_endline (Game_state.to_string_hum game_state);
+    pos
+  | None -> random_move_strategy ~game_kind ~pieces
 ;;
