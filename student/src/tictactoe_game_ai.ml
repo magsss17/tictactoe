@@ -88,21 +88,10 @@ let score
   ~(pieces : Piece.t Position.Map.t)
   : float
   =
-  let result = Tic_tac_toe_exercises_lib.evaluate ~game_kind ~pieces in
-  match result with
+  match Tic_tac_toe_exercises_lib.evaluate ~game_kind ~pieces with
   | Game_over { winner = Some p } ->
     if Piece.equal me p then Float.infinity else Float.neg_infinity
   | _ -> 0.0
-;;
-
-let is_terminal_node
-  ~(game_kind : Game_kind.t)
-  ~(pieces : Piece.t Position.Map.t)
-  : bool
-  =
-  match Tic_tac_toe_exercises_lib.evaluate ~game_kind ~pieces with
-  | Game_continues -> false
-  | _ -> true
 ;;
 
 let rec minimax
@@ -116,46 +105,53 @@ let rec minimax
   : float
   =
   let temp = Map.set pieces ~key:node ~data:me in
-  if depth = 0 || is_terminal_node ~game_kind ~pieces:temp
-  then score ~game_kind ~me:player ~pieces
+  if depth = 0
+     ||
+     match Tic_tac_toe_exercises_lib.evaluate ~game_kind ~pieces with
+     | Game_continues -> false
+     | _ -> true
+  then score ~game_kind ~me:player ~pieces:temp
   else if maximizing_player
   then (
-    let value = ref Float.neg_infinity in
+    let _value = ref Float.neg_infinity in
     let children =
       Tic_tac_toe_exercises_lib.available_moves ~game_kind ~pieces:temp
     in
-    List.iter children ~f:(fun x ->
-      value
-        := Core.Float.max
-             !value
-             (minimax
-                ~node:x
-                ~depth:(depth - 1)
-                ~maximizing_player:false
-                ~game_kind
-                ~me:(Piece.flip me)
-                ~pieces:temp
-                ~player));
-    !value)
+    children
+    |> List.map ~f:(fun new_pos ->
+         minimax
+           ~node:new_pos
+           ~depth:(depth - 1)
+           ~maximizing_player:false
+           ~me:(Piece.flip me)
+           ~pieces:temp
+           ~game_kind
+           ~player)
+    |> List.fold ~init:Float.neg_infinity ~f:Float.max
+    (* List.iter children ~f:(fun x -> value := Core.Float.max !value
+       (minimax ~node:x ~depth:(depth - 1) ~maximizing_player:false
+       ~game_kind ~me:(Piece.flip me) ~pieces:temp ~player)); !value) *))
   else (
-    let value = ref Float.infinity in
+    let _value = ref Float.infinity in
     let children =
       Tic_tac_toe_exercises_lib.available_moves ~game_kind ~pieces:temp
     in
-    List.iter children ~f:(fun x ->
-      value
-        := Core.Float.min
-             !value
-             (minimax
-                ~node:x
-                ~depth:(depth - 1)
-                ~maximizing_player:true
-                ~game_kind
-                ~me
-                ~pieces:temp
-                ~player));
-    !value)
+    children
+    |> List.map ~f:(fun new_pos ->
+         minimax
+           ~node:new_pos
+           ~depth:(depth - 1)
+           ~maximizing_player:true
+           ~me
+           ~pieces:temp
+           ~game_kind
+           ~player)
+    |> List.fold ~init:Float.infinity ~f:Float.min)
 ;;
+
+(* List.iter children ~f:(fun x -> value := Core.Float.min !value (minimax
+   ~node:x ~depth:(depth - 1) ~maximizing_player:true ~game_kind ~me
+   ~pieces:temp ~player)); !value) *)
 
 let compute_next_move ~(me : Piece.t) ~(game_state : Game_state.t)
   : Position.t
@@ -173,21 +169,15 @@ let compute_next_move ~(me : Piece.t) ~(game_state : Game_state.t)
          ( minimax
              ~node:pos
              ~depth:11
-             ~maximizing_player:true
+             ~maximizing_player:false
              ~me
              ~pieces
              ~game_kind
              ~player:me
          , pos ))
     |> List.max_elt ~compare:(fun (v1, _pos1) (v2, _pos2) ->
-         print_s [%message "" (v1 : Float.t)];
-         print_s [%message "" (_pos1 : Position.t)];
-         print_s [%message "" (v2 : Float.t)];
-         print_s [%message "" (_pos2 : Position.t)];
          Float.compare v1 v2)
   with
-  | Some (_v1, pos) ->
-    print_endline (Game_state.to_string_hum game_state);
-    pos
+  | Some (_v1, pos) -> pos
   | None -> random_move_strategy ~game_kind ~pieces
 ;;
