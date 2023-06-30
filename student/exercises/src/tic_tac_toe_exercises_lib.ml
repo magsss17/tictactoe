@@ -281,8 +281,6 @@ let reduce_list
   let rec helper (index : int) (l : (Position.t * int) list)
     : (Position.t * int) list
     =
-    (* print_s [%message "index: %d" (index : int)]; print_s [%message (l :
-       (Position.t * int) list)];*)
     match index with
     | 1 -> l
     | _ -> helper (index - 1) (add_neighbors ~pos_list:l ~p ~pieces)
@@ -303,16 +301,8 @@ let evaluate ~(game_kind : Game_kind.t) ~(pieces : Piece.t Position.Map.t)
   let l = List.init 4 ~f:(fun i -> i) in
   let x_pieces = Map.filter pieces ~f:(fun p -> Piece.equal p Piece.X) in
   let o_pieces = Map.filter pieces ~f:(fun p -> Piece.equal p Piece.O) in
-  let init_x =
-    List.concat
-      (List.map l ~f:(fun x ->
-         List.map (Map.keys x_pieces) ~f:(fun y -> y, x)))
-  in
-  let init_o =
-    List.concat
-      (List.map l ~f:(fun x ->
-         List.map (Map.keys o_pieces) ~f:(fun y -> y, x)))
-  in
+  let init_x = List.cartesian_product (Map.keys x_pieces) l in
+  let init_o = List.cartesian_product (Map.keys o_pieces) l in
   let num_x =
     List.length (reduce_list ~pos_list:init_x ~p:Piece.X ~pieces ~times)
   in
@@ -342,8 +332,9 @@ let winning_moves
   let my_pieces = Map.filter pieces ~f:(fun p -> Piece.equal p me) in
   let available = available_moves ~game_kind ~pieces in
   List.filter available ~f:(fun x ->
-    let temp = Map.set my_pieces ~key:x ~data:me in
-    match evaluate ~game_kind ~pieces:temp with
+    match
+      evaluate ~game_kind ~pieces:(Map.set my_pieces ~key:x ~data:me)
+    with
     | Game_over _ -> true
     | _ -> false)
 ;;

@@ -86,12 +86,15 @@ let score
   ~(me : Piece.t)
   ~(game_kind : Game_kind.t)
   ~(pieces : Piece.t Position.Map.t)
-  : float
+  : float * bool
   =
   match Tic_tac_toe_exercises_lib.evaluate ~game_kind ~pieces with
   | Game_over { winner = Some p } ->
-    if Piece.equal me p then Float.infinity else Float.neg_infinity
-  | _ -> 0.0
+    if Piece.equal me p
+    then Float.infinity, true
+    else Float.neg_infinity, true
+  | Game_continues -> 0.0, false
+  | _ -> 0.0, true
 ;;
 
 let rec minimax
@@ -105,12 +108,9 @@ let rec minimax
   : float
   =
   let temp = Map.set pieces ~key:node ~data:me in
-  if depth = 0
-     ||
-     match Tic_tac_toe_exercises_lib.evaluate ~game_kind ~pieces with
-     | Game_continues -> false
-     | _ -> true
-  then score ~game_kind ~me:player ~pieces:temp
+  let score, terminate = score ~game_kind ~me:player ~pieces:temp in
+  if depth = 0 || terminate
+  then score
   else if maximizing_player
   then (
     let value = ref Float.neg_infinity in
@@ -166,7 +166,7 @@ let compute_next_move ~(me : Piece.t) ~(game_state : Game_state.t)
          ( minimax
              ~node:pos
              ~depth:11
-             ~maximizing_player:false
+             ~maximizing_player:true
              ~me
              ~pieces
              ~game_kind
