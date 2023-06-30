@@ -113,45 +113,42 @@ let rec minimax
   then score ~game_kind ~me:player ~pieces:temp
   else if maximizing_player
   then (
-    let _value = ref Float.neg_infinity in
+    let value = ref Float.neg_infinity in
     let children =
       Tic_tac_toe_exercises_lib.available_moves ~game_kind ~pieces:temp
     in
-    children
-    |> List.map ~f:(fun new_pos ->
-         minimax
-           ~node:new_pos
-           ~depth:(depth - 1)
-           ~maximizing_player:false
-           ~me:(Piece.flip me)
-           ~pieces:temp
-           ~game_kind
-           ~player)
-    |> List.fold ~init:Float.neg_infinity ~f:Float.max
-    (* List.iter children ~f:(fun x -> value := Core.Float.max !value
-       (minimax ~node:x ~depth:(depth - 1) ~maximizing_player:false
-       ~game_kind ~me:(Piece.flip me) ~pieces:temp ~player)); !value) *))
+    List.iter children ~f:(fun x ->
+      value
+        := Core.Float.max
+             !value
+             (minimax
+                ~node:x
+                ~depth:(depth - 1)
+                ~maximizing_player:false
+                ~game_kind
+                ~me:(Piece.flip me)
+                ~pieces:temp
+                ~player));
+    !value)
   else (
-    let _value = ref Float.infinity in
+    let value = ref Float.infinity in
     let children =
       Tic_tac_toe_exercises_lib.available_moves ~game_kind ~pieces:temp
     in
-    children
-    |> List.map ~f:(fun new_pos ->
-         minimax
-           ~node:new_pos
-           ~depth:(depth - 1)
-           ~maximizing_player:true
-           ~me
-           ~pieces:temp
-           ~game_kind
-           ~player)
-    |> List.fold ~init:Float.infinity ~f:Float.min)
+    List.iter children ~f:(fun x ->
+      value
+        := Core.Float.min
+             !value
+             (minimax
+                ~node:x
+                ~depth:(depth - 1)
+                ~maximizing_player:true
+                ~game_kind
+                ~me
+                ~pieces:temp
+                ~player));
+    !value)
 ;;
-
-(* List.iter children ~f:(fun x -> value := Core.Float.min !value (minimax
-   ~node:x ~depth:(depth - 1) ~maximizing_player:true ~game_kind ~me
-   ~pieces:temp ~player)); !value) *)
 
 let compute_next_move ~(me : Piece.t) ~(game_state : Game_state.t)
   : Position.t
